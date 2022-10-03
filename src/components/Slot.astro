@@ -1,0 +1,60 @@
+---
+import { getEditableAttributes } from '../../utils/storyblok.js'
+
+import Button from './Button.astro'
+import Card from './Card.astro'
+import Code from './Code.astro'
+import Dialog from './Dialog.astro'
+import Dropdown from './Dropdown.astro'
+import Form from './Form.astro'
+import FormField from './FormField.astro'
+import Group from './Group.astro'
+import Header from './Header.astro'
+import Image from './Image.astro'
+import List from './List.astro'
+import Map from './Map.astro'
+import Page from './Page.astro'
+import Section from './Section.astro'
+import Spacer from './Spacer.astro'
+import Tabs from './Tabs.astro'
+import TextRich from './TextRich.astro'
+import Video from './Video.astro'
+
+let { bloks } = Astro.props
+
+const Components = {
+	Button: Button,
+	Card: Card,
+	Code: Code,
+	Dialog: Dialog,
+	Dropdown: Dropdown,
+	Form: Form,
+	FormField: FormField,
+	Group: Group,
+	Header: Header,
+	Image: Image,
+	List: List,
+	Map: Map,
+	Page: Page,
+	Section: Section,
+	Spacer: Spacer,
+	Tabs: Tabs,
+	TextRich: TextRich,
+	Video: Video,
+}
+---
+
+{
+	bloks.map(async (blok) => {
+		const editableAttributes = await getEditableAttributes(blok)
+		blok.c = editableAttributes['data-blok-c']
+		blok.uid = editableAttributes['data-blok-uid']
+		const El = Components[blok.component]
+
+		return El ? (
+			<El blok={blok} />
+		) : (
+			`Component "${El}" hasn't been created yet.`
+		)
+	})
+}

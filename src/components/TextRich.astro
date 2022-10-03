@@ -1,0 +1,24 @@
+---
+import { renderRichText } from '@storyblok/js'
+import responsive from './utils/responsive'
+
+const { blok } = Astro.props
+
+const inline = [
+	responsive(blok),
+	blok.alignment ? `text-align: ${blok.alignment};` : '',
+].join(' ')
+
+const text = renderRichText(blok.text)
+	.replace('{c}', 'ⓒ')
+	.replace('{year}', new Date().getFullYear())
+---
+
+<div
+	class={blok.component}
+	data-blok-c={blok.c}
+	data-blok-uid={blok.uid}
+	style={inline}
+	set:html={text}
+>
+</div>

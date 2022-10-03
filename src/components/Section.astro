@@ -1,0 +1,90 @@
+---
+import Slot from './Slot.astro'
+
+const { blok } = Astro.props
+const classList = [blok.component, blok.style].join(' ')
+
+const inline = [
+	`--section: var(--${blok.color});`,
+	`--on-section: var(--on-${blok.color});`,
+].join(' ')
+---
+
+<section
+	class={classList}
+	data-blok-c={blok.c}
+	data-blok-uid={blok.uid}
+	style={inline}
+>
+	<div class="top"></div>
+	<div class="grid">
+		<Slot bloks={blok.content} />
+	</div>
+</section>
+
+<style lang="scss" is:global>
+	.Section {
+		background: var(--section);
+		color: var(--on-section);
+		display: block;
+
+		&[class*='full-bleed'] {
+			--width: 100vw;
+			left: 50%;
+			margin-left: calc(-1 * var(--width) / 2);
+			position: relative;
+			width: var(--width);
+
+			@media (min-width: 1320px) {
+				--width: 1320px;
+			}
+		}
+
+		&[class*='full-width'] {
+			margin-left: calc(-1 * var(--page-padding));
+			margin-right: calc(-1 * var(--page-padding));
+		}
+
+		&[class*='contained'] {
+			padding: var(--gap) var(--page-padding);
+		}
+
+		&[class*='swoop'] {
+			--swoop-curve: min(10vw, calc(3 * var(--gap)));
+			border-bottom-right-radius: var(--swoop-curve);
+			margin-bottom: calc(var(--swoop-curve) - var(--gap));
+			margin-top: calc(var(--swoop-curve) - var(--gap));
+			position: relative;
+		}
+
+		> .top {
+			display: none;
+		}
+
+		&[class*='swoop'] > .top {
+			display: block;
+			height: var(--swoop-curve);
+			overflow: hidden;
+			position: absolute;
+			right: 0;
+			top: calc(-1 * var(--swoop-curve));
+			width: var(--swoop-curve);
+		}
+
+		&[class*='swoop'] > .top:before {
+			border-radius: 50%;
+			box-shadow: 0 0 0 var(--swoop-curve) var(--section);
+			content: '';
+			display: block;
+			height: calc(2 * var(--swoop-curve));
+			position: absolute;
+			right: 0;
+			top: calc(-1 * var(--swoop-curve));
+			width: calc(2 * var(--swoop-curve));
+		}
+
+		.TextRich a {
+			color: inherit;
+		}
+	}
+</style>

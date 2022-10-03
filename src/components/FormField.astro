@@ -1,0 +1,454 @@
+---
+import responsive from './utils/responsive'
+const { blok } = Astro.props
+const El = blok.type === 'textarea' ? 'textarea' : 'input'
+---
+
+{
+	['text', 'tel', 'email', 'textarea'].includes(blok.type) && (
+		<div
+			class={'material-input material-input--' + blok.type}
+			style={responsive(blok)}
+		>
+			<El
+				id={'b-' + blok._uid}
+				name={blok.type === 'email' ? 'email' : blok.label}
+				placeholder=" "
+				required={blok.required}
+				type={blok.type}
+			/>
+			<div class="material-input-outline">
+				<label for={'b-' + blok._uid}>
+					<span>{blok.label}</span>
+				</label>
+			</div>
+		</div>
+	)
+}
+
+{
+	blok.type === 'select' && (
+		<div class="material-input">
+			<select id={'b-' + blok._uid} name={blok.label} required={blok.required}>
+				{<option selected />}
+				{blok.options.split('\n').map((option) => {
+					return <option>{option}</option>
+				})}
+			</select>
+			<div class="material-input-outline">
+				<label for={'b-' + blok._uid}>
+					<span>{blok.label}</span>
+				</label>
+			</div>
+		</div>
+	)
+}
+
+{
+	['checkbox', 'radio'].includes(blok.type) && (
+		<fieldset>
+			<legend>{blok.label}</legend>
+			{blok.options.split('\n').map((option) => {
+				return (
+					<label>
+						<input type={blok.type} name={blok.label} />
+						{blok.type === 'radio' && <i />}
+						{blok.type === 'checkbox' && (
+							<svg viewBox="0 0 24 24">
+								<path d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+							</svg>
+						)}
+						{option}
+					</label>
+				)
+			})}
+		</fieldset>
+	)
+}
+
+<script>
+	document.querySelectorAll('.material-input [type=tel]').forEach((input) => {
+		input.addEventListener('input', (e) => {
+			if (e.inputType !== 'deleteContentBackward') {
+				let numbers = input.value.match(/[0-9]+/g)
+				if (numbers) {
+					numbers = numbers.join('')
+					numbers =
+						numbers.charAt(0) === '0' || numbers.charAt(0) === '1'
+							? numbers.substring(1)
+							: numbers
+					let first =
+						numbers.length >= 3
+							? '(' + numbers.substr(0, 3) + ') '
+							: '(' + numbers.substr(0, 3)
+					let second = numbers.substr(3, 3)
+					let third = numbers.length > 6 ? '-' + numbers.substr(6, 4) : ''
+					input.value = `${first}${second}${third}`.substr(0, 14)
+				}
+			}
+		})
+	})
+
+	document.querySelectorAll('.material-input textarea').forEach((textarea) => {
+		textarea.addEventListener('input', () => {
+			textarea.parentElement.dataset.replicatedValue = textarea.value
+		})
+	})
+
+	document.querySelectorAll('.material-input select').forEach((select) => {
+		select.addEventListener(
+			'change',
+			() => (select.dataset.active = select.value ? true : false)
+		)
+	})
+</script>
+
+<style lang="scss" is:global>
+	.form__field > *,
+	.material-input {
+		width: 100%;
+	}
+
+	.material-input {
+		--valid: green;
+		--invalid: red;
+		--padding: 8px;
+		--border-width: 1px; // don't modify
+		--border-color: var(--surface-border);
+		--border-radius: 4px;
+		height: 48px;
+		max-height: 48px;
+		min-height: 48px;
+		position: relative;
+
+		input,
+		select,
+		textarea {
+			appearance: none;
+			background: transparent;
+			border-radius: var(--border-radius);
+			border: none;
+			color: inherit;
+			display: block;
+			font-size: 16px;
+			height: 48px;
+			margin: 0;
+			padding: 0 var(--padding);
+			width: 100%;
+			width: calc(100% - var(--padding) * 2);
+
+			&:focus {
+				outline: none;
+			}
+
+			&:required + div > label > span:after {
+				content: '*';
+				left: 0.1em;
+				position: relative;
+				transform: scale(0.5);
+			}
+		}
+
+		select {
+			color: inherit;
+			width: 100%;
+
+			option {
+				color: initial;
+			}
+
+			~ i {
+				background: linear-gradient(
+					to bottom right,
+					transparent 0%,
+					transparent 50%,
+					currentColor 50%,
+					currentColor 100%
+				);
+				content: '';
+				display: block;
+				height: 6px;
+				position: absolute;
+				right: 12px;
+				top: calc(50% - 4px);
+				transform: rotate(45deg);
+				width: 6px;
+			}
+		}
+
+		&-outline {
+			display: flex;
+			height: 100%;
+			left: 0;
+			pointer-events: none;
+			position: absolute;
+			top: 0;
+			width: 100%;
+
+			&:before,
+			&:after {
+				border: var(--border-width) solid var(--border-color);
+				content: '';
+				width: var(--padding);
+			}
+
+			&:before {
+				border-bottom-left-radius: var(--border-radius);
+				border-right: none;
+				border-top-left-radius: var(--border-radius);
+			}
+
+			&:after {
+				border-bottom-right-radius: var(--border-radius);
+				border-left: none;
+				border-top-right-radius: var(--border-radius);
+				flex-grow: 1;
+			}
+
+			label {
+				align-items: center;
+				border-bottom: var(--border-width) solid var(--border-color);
+				border-top: var(--border-width) solid var(--border-color);
+				display: flex;
+
+				span {
+					transition: transform 0.25s;
+					will-change: transform;
+				}
+			}
+		}
+
+		input:focus + &-outline,
+		input:not(:placeholder-shown) + &-outline,
+		textarea:focus + &-outline,
+		textarea:not(:placeholder-shown) + &-outline,
+		select:focus + &-outline,
+		select[data-active='true'] + &-outline,
+		select[data-active='true']:focus + &-outline {
+			--border-color: var(--field);
+
+			label {
+				border-top: var(--border-width) solid transparent;
+				font-size: 12px;
+				padding-left: 0.5em;
+				padding-right: 0.5em;
+
+				span {
+					position: relative;
+					transform: translatey(-24px);
+				}
+			}
+		}
+
+		input:focus + &-outline,
+		textarea:focus + &-outline,
+		select:focus + &-outline,
+		select[data-active='true']:focus + &-outline {
+			--border-width: 2px;
+
+			label {
+				color: var(--field);
+			}
+		}
+
+		&--textarea {
+			display: grid;
+			height: auto;
+			max-height: none;
+
+			&:after {
+				content: attr(data-replicated-value) ' ';
+				visibility: hidden;
+				white-space: pre-wrap;
+			}
+
+			label {
+				align-items: flex-start;
+				padding-top: 14px;
+			}
+
+			textarea {
+				height: auto;
+				max-height: none;
+				min-height: 7.25em;
+				overflow-y: hidden;
+				resize: none;
+			}
+
+			&:after,
+			textarea {
+				box-sizing: border-box;
+				font: inherit;
+				grid-area: 1 / 1 / 2 / 2;
+				padding: 14px var(--padding);
+			}
+		}
+
+		select[data-active] + &-outline {
+			--border-color: currentColor;
+			--border-width: 1px;
+		}
+
+		input:not(:focus):not(:placeholder-shown):valid + .material-input-outline,
+		textarea:not(:focus):not(:placeholder-shown):valid
+			+ .material-input-outline {
+			--border-color: var(--valid);
+			color: var(--valid);
+		}
+
+		input:not(:focus):not(:placeholder-shown):invalid
+			+ .material-input-outline {
+			--border-color: var(--invalid);
+			color: var(--invalid);
+		}
+
+		input:not(:focus):not(:placeholder-shown):invalid,
+		input:not(:focus):not(:placeholder-shown):invalid
+			+ .material-input-outline {
+			animation-timing-function: ease-in-out;
+			animation: headShake 1s;
+			will-change: transform;
+		}
+	}
+
+	.grecaptcha-badge {
+		visibility: hidden;
+	}
+
+	@keyframes headShake {
+		0% {
+			transform: translateX(0);
+		}
+		6.5% {
+			transform: translateX(-6px);
+		}
+		18.5% {
+			transform: translateX(5px);
+		}
+		31.5% {
+			transform: translateX(-3px);
+		}
+		43.5% {
+			transform: translateX(2px);
+		}
+		50% {
+			transform: translateX(0);
+		}
+	}
+
+	fieldset {
+		border: none;
+		font-family: system-ui;
+		margin: 0;
+		padding: 8px 0 0;
+
+		legend {
+			padding: 0;
+		}
+
+		label {
+			align-items: center;
+			display: flex;
+			line-height: 1;
+			position: relative;
+
+			[type='checkbox'],
+			[type='radio'] {
+				appearance: none;
+				border-radius: 50%;
+				color: inherit;
+				cursor: pointer;
+				display: grid;
+				height: 40px;
+				margin-right: 8px;
+				margin: 0;
+				place-content: center;
+				position: relative;
+				width: 40px;
+
+				&:before {
+					background: var(--field);
+					border-radius: 50%;
+					content: '';
+					height: 40px;
+					opacity: 0;
+					position: absolute;
+					width: 40px;
+				}
+
+				&:active:before,
+				&:focus-visible:before {
+					opacity: 0.1;
+				}
+
+				&:after {
+					border-radius: 2px;
+					border: 2px solid currentcolor;
+					box-sizing: content-box;
+					content: '';
+					height: 14px;
+					opacity: 0.54;
+					transition: none;
+					width: 14px;
+				}
+
+				&:checked:after {
+					background: var(--field);
+					border-color: var(--field);
+					opacity: 1;
+				}
+
+				& + svg {
+					display: block;
+					height: 14px;
+					left: 13px;
+					pointer-events: none;
+					position: absolute;
+					width: 14px;
+
+					& > path {
+						fill: none;
+						stroke-dasharray: 29.7833;
+						stroke-dashoffset: 29.7833;
+						stroke-width: 3.12px;
+						transition: stroke-dashoffset 180ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+					}
+				}
+
+				&:checked + svg > path {
+					opacity: 1;
+					stroke-dashoffset: 0;
+					stroke: var(--on-field);
+				}
+			}
+
+			[type='radio'] {
+				&:after {
+					border-radius: 50%;
+				}
+
+				&:checked:after {
+					background: transparent;
+				}
+
+				+ i {
+					background: var(--field);
+					border-radius: 50%;
+					fill: var(--field);
+					height: 10px;
+					left: 15px;
+					position: absolute;
+					transform-origin: center;
+					transform: scale(0);
+					transition: 0.25s;
+					width: 10px;
+					will-change: transform;
+				}
+
+				&:checked + i {
+					transform: scale(1);
+				}
+			}
+		}
+	}
+</style>

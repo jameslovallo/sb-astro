@@ -1,0 +1,27 @@
+---
+import Slot from './Slot.astro'
+import responsive from './utils/responsive'
+
+const { blok } = Astro.props
+const classList = [blok.component, blok.subgrid ? 'grid' : ''].join(' ')
+---
+
+<div
+	class={classList}
+	data-blok-c={blok.c}
+	data-blok-uid={blok.uid}
+	style={responsive(blok)}
+>
+	<Slot bloks={blok.content} />
+</div>
+
+<style lang="scss" is:global>
+	.Group {
+		display: flex;
+		flex-flow: row wrap;
+		height: max-content;
+		&:not(.grid) > *:not(.Button) {
+			width: 100%;
+		}
+	}
+</style>

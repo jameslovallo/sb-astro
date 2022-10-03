@@ -1,0 +1,105 @@
+---
+import responsive from './utils/responsive'
+
+const { blok } = Astro.props
+
+// container
+const classList = [blok.component].join(' ')
+
+const containerInline = [
+	blok.aspect_ratio ? `aspect-ratio: ${blok.aspect_ratio};` : '',
+	blok.fixed_width ? `width: ${blok.fixed_width}` : '',
+	`filter: ${[
+		`brightness(${blok.brightness})`,
+		`contrast(${blok.contrast})`,
+		`saturate(${blok.saturation})`,
+		`grayscale(${blok.grayscale ? 1 : 0})`,
+	].join(' ')};`,
+	'overflow: hidden;',
+	responsive(blok),
+].join(' ')
+
+// img
+const imageInline = [
+	blok.aspect_ratio ? `aspect-ratio: ${blok.aspect_ratio};` : '',
+	'height: auto;',
+	'width: 100%;',
+].join(' ')
+
+// src
+const i = blok.image
+const { filename } = i
+const dimensions = i.filename.split('/')[5]
+const contain = blok.fit === 'contain' ? '/fit-in' : ''
+const smart = blok.fit === 'smart' ? '/smart' : ''
+const focus = i.focus ? `:focal${i.focus})` : ''
+
+let [hor, vert] = [0, 0]
+let [width, height] = dimensions.split('x')
+
+if (blok.aspect_ratio.match(/[0-9]+\/[0-9]+/)) {
+	;[hor, vert] = blok.aspect_ratio.split('/')
+	height = Math.round((width * vert) / hor)
+}
+
+const src = (w, h) => {
+	if (filename.endsWith('.svg')) {
+		return filename
+	} else
+		return [
+			filename,
+			'/m',
+			contain,
+			'/',
+			w,
+			'x',
+			h,
+			smart,
+			'/filters:quality(80):fill(transparent)',
+			focus,
+		].join('')
+}
+
+// placeholder
+const placeholderWidth = 30
+const placeholderHeight = Math.round((placeholderWidth * vert) / hor)
+let placeholder = await fetch(src(placeholderWidth, placeholderHeight)).then(
+	(res) => res.buffer()
+)
+placeholder = 'data:image/webp;base64,' + placeholder.toString('base64')
+---
+
+<div class={classList} style={containerInline}>
+	<img
+		class="placeholder"
+		data-blok-c={blok.c}
+		data-blok-uid={blok.uid}
+		data-hor={hor}
+		data-vert={vert}
+		data-src={src('*width*', '*height*')}
+		height={hor || width + 'px'}
+		src={placeholder}
+		style={imageInline}
+		width={vert || height + 'px'}
+	/>
+</div>
+
+<style>
+	.placeholder {
+		filter: blur(15px);
+	}
+</style>
+
+<script>
+	document.querySelectorAll('.Image .placeholder').forEach((img) => {
+		let { src, hor, vert } = img.dataset
+		let { clientWidth, clientHeight } = img
+		clientHeight = Math.round((clientWidth * vert) / hor)
+		img.src = src
+			.replace('*width*', clientWidth)
+			.replace('*height*', clientHeight)
+		img.addEventListener('load', () => {
+			img.classList.remove('placeholder')
+		})
+	})
+</script>

@@ -1,0 +1,32 @@
+---
+import responsive from './utils/responsive'
+
+const { blok } = Astro.props
+const inline = [responsive(blok)].join(' ')
+---
+
+<div data-blok-c={blok.c} data-blok-uid={blok.uid} style={inline}>
+	{
+		!blok.youtube_video_id ? (
+			<video
+				autoplay={blok.autoplay}
+				controls={blok.controls}
+				loop={blok.loop}
+				muted={blok.mute}
+				playsinline={blok.plays_inline}
+				poster={blok.video_poster?.filename + '/m/'}
+				preload="auto"
+			>
+				{blok.video_files.map((src) => (
+					<source src={src?.filename} />
+				))}
+			</video>
+		) : (
+			<youtube-lite vid={blok.youtube_video_id} />
+		)
+	}
+</div>
+
+<script>
+	import './elements/youtube'
+</script>

@@ -1,0 +1,55 @@
+---
+import Slot from './Slot.astro'
+
+const { settings } = Astro.props
+---
+
+<nav class="Header">
+	<Slot bloks={settings.drawer_button} />
+	<a href="/">{settings.app_bar_title}</a>
+	<div class="Header_desktop">
+		<Slot bloks={settings.app_bar_desktop} />
+	</div>
+	<Slot bloks={settings.app_bar} />
+</nav>
+
+<style lang="scss" is:global>
+	.Header {
+		align-items: center;
+		display: flex;
+		height: 56px;
+		padding-left: 4px;
+		padding-right: 8px;
+
+		> a[href='\/'] {
+			color: inherit;
+			font-size: 20px;
+			font-weight: 500;
+			margin-right: auto;
+			text-decoration: none;
+		}
+
+		> .Button:first-of-type {
+			display: grid;
+			margin-right: 20px;
+		}
+
+		&_desktop {
+			display: none;
+		}
+
+		@media (min-width: 768px) {
+			padding-left: 12px;
+			padding-right: 16px;
+			height: 64px;
+
+			> .Button:first-of-type {
+				display: none;
+			}
+
+			&_desktop {
+				display: block;
+			}
+		}
+	}
+</style>

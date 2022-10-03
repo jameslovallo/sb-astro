@@ -1,0 +1,80 @@
+:root {
+	--gap: 20px;
+	--page-padding: var(--gap);
+
+	@media (min-width: 640px) {
+		--page-padding: 5vw;
+	}
+
+	@media (min-width: 1320px) {
+		--page-padding: calc(50vw - 600px);
+	}
+}
+
+body {
+	background: var(--background);
+	color: var(--on-background);
+	margin: 0;
+	min-height: 100vh;
+}
+
+main,
+article {
+	padding: var(--gap) var(--page-padding);
+}
+
+footer {
+	padding: 0 var(--page-padding);
+}
+
+main,
+article,
+.grid {
+	display: grid;
+	gap: var(--gap);
+	grid-template-columns: repeat(12, 1fr);
+
+	> * {
+		grid-column: auto / span 12;
+
+		$breakpoints: (
+			'xs': '0px',
+			'sm': '480px',
+			'md': '768px',
+			'lg': '1024px',
+			'xl': '1333px',
+		);
+
+		@each $breakpoint, $value in $breakpoints {
+			@media (min-width: $value) {
+				grid-column: auto / span var(--#{unquote($breakpoint)}, 12);
+			}
+		}
+	}
+
+	> .Spacer {
+		margin: calc(-1 * var(--gap)) 0;
+	}
+}
+
+img {
+	max-width: 100%;
+}
+
+img,
+svg {
+	display: block;
+}
+
+footer {
+	position: sticky;
+	top: 100%;
+	.Section[variant*='full-width'] {
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
+
+.Button :not(.text) + .Button:not(.text) {
+	margin-left: 8px;
+}

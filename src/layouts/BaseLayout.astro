@@ -1,0 +1,80 @@
+---
+import { getStory } from '../../utils/storyblok.js'
+import Drawer from '../components/Drawer.astro'
+import Header from '../components/Header.astro'
+import Page from '../components/Page.astro'
+import Slot from '../components/Slot.astro'
+import '../scss/index.scss'
+
+let settings = await getStory('settings')
+settings = settings.content
+
+let { story } = Astro.props
+let { name } = story
+story = story.content
+
+const title = () => {
+	const globalName = settings.SEO.title
+	const storyName = story.SEO.title || name
+	if (storyName && globalName) {
+		return storyName + ' | ' + globalName
+	} else if (storyName) {
+		return storyName
+	} else return globalName
+}
+
+const description = story.SEO.description || settings.SEO.description
+const favicon = settings.favicon?.filename
+const image = story.SEO_IMAGE?.filename || settings.SEO_IMAGE?.filename
+---
+
+<html lang="en">
+	<head set:html={settings.custom_html}>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>{title()}</title>
+		<link rel="icon" type="image/x-icon" href={favicon} />
+		<meta name="title" content={title()} />
+		<meta name="description" content={description} />
+		<meta property="og:title" content={title()} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={image} />
+		<meta property="og:type" content="website" />
+		<meta property="twitter:title" content={title()} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content={image} />
+		<meta property="twitter:card" content="summary_large_image" />
+		<style
+			set:html={`
+				:root {
+					--background: ${settings.background || '#fff'};
+					--on-background: ${settings.on_background || '#000'};
+					--primary: ${settings.primary || '#512da8'};
+					--on-primary: ${settings.on_primary || '#fff'};
+					--secondary: ${settings.secondary || '#512da8'};
+					--on-secondary: ${settings.on_secondary || '#fff'};
+					--surface: ${settings.surface || '#fff'};
+					--on-surface: ${settings.on_surface || '#000'};
+					--surface-border: ${settings.surface_border || 'rgba(155,155,155,0.5)'};
+					--black: black;
+					--on-black: white;
+					--white: white;
+					--on-white: black;
+					--hover-opacity: 0.1;
+					--active-opacity: 0.2;
+				}
+				${settings.custom_css}
+			`}
+		>
+
+		</style>
+	</head>
+	<body class="pt-36">
+		<Header settings={settings} />
+		<Drawer settings={settings} />
+		<Page story={story} />
+		<footer>
+			<Slot bloks={settings.footer} />
+		</footer>
+	</body>
+</html>

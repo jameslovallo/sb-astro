@@ -1,0 +1,49 @@
+---
+import Slot from './Slot.astro'
+import responsive from './utils/responsive'
+
+const { blok } = Astro.props
+const classList = [blok.component, blok.style].join(' ')
+---
+
+<div
+	class={classList}
+	data-blok-c={blok.c}
+	data-blok-uid={blok.uid}
+	style={responsive(blok)}
+>
+	<Slot bloks={blok.media} />
+	{
+		blok.content.length > 0 && (
+			<div class="Card_content">
+				<Slot bloks={blok.content} />
+			</div>
+		)
+	}
+	{
+		blok.actions.length > 0 && (
+			<div class="Card_actions">
+				<Slot bloks={blok.actions} />
+			</div>
+		)
+	}
+</div>
+
+<style lang="scss" is:global>
+	.Card {
+		background: var(--surface);
+		border: 1px solid var(--surface-border);
+		border-radius: 8px;
+		color: var(--on-surface);
+		overflow: hidden;
+
+		> &_content {
+			padding: 16px;
+		}
+
+		> &_actions {
+			display: flex;
+			padding: 8px;
+		}
+	}
+</style>

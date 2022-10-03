@@ -1,0 +1,66 @@
+---
+import Slot from './Slot.astro';
+import responsive from './utils/responsive';
+
+const { blok } = Astro.props
+const TabEl = 'h' + blok.heading_level
+const PanelEl = 'div'
+
+const inline = [
+	`--indicator-color: var(--${blok.color || 'primary'});`,
+	responsive(blok)
+].join(' ')
+---
+
+<div
+	class={blok.component} 
+	data-blok-c={blok.c}
+	data-blok-uid={blok.uid}
+	style={inline}
+>
+	<snappy-tabs breakpoint={blok.breakpoint + 'px'}>
+		{
+			blok.content.map((tab) => (
+					<TabEl slot="tab">{tab.label}</TabEl>
+					<PanelEl slot="panel">
+						<Slot bloks={tab.content} />
+					</PanelEl>
+				)
+			)
+		}
+	</snappy-tabs>
+</div>
+
+<script>
+	import '@snappywc/tabs'
+</script>
+
+<style lang="scss" is:global>
+	snappy-tabs {
+		--border-color: var(--surface-border);
+		background: var(--surface);
+		border-radius: 8px;
+		color: var(--on-surface);
+
+		&[type=tabs] [slot*=tab] {
+			text-align: center;
+		}
+
+		[slot*=tab] {
+			font-family: var(--ui-family);
+			font-size: 14px;
+			font-weight: 500;
+			letter-spacing: 1.25px;
+			text-transform: uppercase;
+			user-select: none;
+		}
+		&::part(panel) {
+			padding: 0;
+		}
+		[slot*=panel] {
+			.TextRich {
+				margin: 1rem;
+			}
+		}
+	}
+</style>

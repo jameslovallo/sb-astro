@@ -1,0 +1,24 @@
+{
+	"name": "@example/starter",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "astro dev",
+		"start": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview"
+	},
+	"devDependencies": {
+		"@storyblok/js": "^1.8.3",
+		"astro": "^1.2.4",
+		"axios": "^0.27.2",
+		"sass": "^1.54.9"
+	},
+	"dependencies": {
+		"@snappywc/tabs": "^1.0.13",
+		"@vitejs/plugin-basic-ssl": "^0.1.2",
+		"ardi": "^0.0.12",
+		"fetch-base64": "^2.1.2",
+		"tua-body-scroll-lock": "^1.2.1"
+	}
+}

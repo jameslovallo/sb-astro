@@ -1,0 +1,15 @@
+---
+import { getEditableAttributes } from '../../utils/storyblok.js'
+import Slot from '../components/Slot.astro'
+
+const { story } = Astro.props
+const editableAttributes = await getEditableAttributes(story)
+---
+
+<main
+	data-blok-c={editableAttributes['data-blok-c']}
+	data-blok-uid={editableAttributes['data-blok-uid']}
+	class:list={[{ storyblok__outline: editableAttributes }]}
+>
+	<Slot bloks={story.body} />
+</main>

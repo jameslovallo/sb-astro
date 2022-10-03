@@ -1,0 +1,39 @@
+---
+import Slot from './Slot.astro'
+import responsive from './utils/responsive'
+
+const { blok } = Astro.props
+const classList = [blok.component, 'grid'].join(' ')
+
+const inline = [
+	responsive(blok),
+	`--field: var(--${blok.color || 'primary'});`,
+	`--on-field: var(--on-${blok.color || 'primary'});`,
+].join(' ')
+---
+
+<form
+	action={'https://formsubmit.co/' + blok.recipient}
+	class={classList}
+	data-blok-c={blok.c}
+	data-blok-uid={blok.uid}
+	method="POST"
+	style={inline}
+>
+	<input type="hidden" name="_subject" value={blok.subject} />
+	<Slot bloks={blok.content} />
+	<button type="submit">
+		<Slot bloks={blok.submit_button} />
+	</button>
+</form>
+
+<style lang="scss" is:global>
+	.Form {
+		> button {
+			background: none;
+			border: none;
+			padding: 0;
+			width: min-content;
+		}
+	}
+</style>
