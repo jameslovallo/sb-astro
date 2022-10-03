@@ -29,7 +29,7 @@ const image = story.SEO_IMAGE?.filename || settings.SEO_IMAGE?.filename
 ---
 
 <html lang="en">
-	<head set:html={settings.custom_html}>
+	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>{title()}</title>
@@ -69,7 +69,7 @@ const image = story.SEO_IMAGE?.filename || settings.SEO_IMAGE?.filename
 
 		</style>
 	</head>
-	<body class="pt-36">
+	<body>
 		<Header settings={settings} />
 		<Drawer settings={settings} />
 		<Page story={story} />

@@ -6,7 +6,7 @@ import {
 } from '@storyblok/js'
 
 const dev = import.meta.env.DEV
-const storyblokToken = import.meta.env.storyblok
+const storyblokToken = import.meta.env.STORYBLOK
 
 const { storyblokApi } = storyblokInit({
 	bridge: false,
