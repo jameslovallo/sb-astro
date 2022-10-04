@@ -20,7 +20,7 @@ const { settings } = Astro.props
 		})
 
 		document.body.addEventListener('click', (e) => {
-			if (e.clientX > drawer.clientWidth) {
+			if (drawer.open && e.clientX > drawer.clientWidth) {
 				drawer.classList.add('out')
 				setTimeout(() => {
 					drawer.close()
