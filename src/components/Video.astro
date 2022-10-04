@@ -2,10 +2,17 @@
 import responsive from './utils/responsive'
 
 const { blok } = Astro.props
-const inline = [responsive(blok)].join(' ')
+const inline = [`aspect-ratio: ${blok.aspect_ratio};`, responsive(blok)].join(
+	' '
+)
 ---
 
-<div data-blok-c={blok.c} data-blok-uid={blok.uid} style={inline}>
+<div
+	class={blok.component}
+	data-blok-c={blok.c}
+	data-blok-uid={blok.uid}
+	style={inline}
+>
 	{
 		!blok.youtube_video_id ? (
 			<video
