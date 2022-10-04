@@ -4,84 +4,83 @@ import Slot from './Slot.astro'
 const { settings } = Astro.props
 ---
 
-<button class="Drawer_overlay"></button>
-<aside class="Drawer">
+<dialog class="Drawer">
 	<Slot bloks={settings.drawer} />
-</aside>
+</dialog>
 
 <script>
 	import { lock, unlock } from 'tua-body-scroll-lock'
 
-	const drawerButton = document.querySelector('nav > .Button:first-of-type')
-	const drawer = document.querySelector('.Drawer')
-	const overlay = document.querySelector('.Drawer_overlay')
+	document.querySelectorAll('.Drawer').forEach((drawer) => {
+		const open = document.querySelector('nav > .Button:first-of-type')
 
-	function openDrawer() {
-		lock(drawer)
-		drawer.style.display = 'flex'
-		overlay.style.display = 'block'
-		setTimeout(() => {
-			drawer.setAttribute('open', true)
+		open.addEventListener('click', () => {
+			drawer.showModal()
+			lock(drawer)
 		})
-	}
 
-	function closeDrawer() {
-		unlock(drawer)
-		drawer.setAttribute('open', false)
-		setTimeout(() => {
-			drawer.style.display = 'none'
-			overlay.style.display = 'none'
-		}, 333)
-	}
-
-	drawerButton.addEventListener('click', () => {
-		drawer.getAttribute('open') === 'false' ? openDrawer() : closeDrawer()
+		document.body.addEventListener('click', (e) => {
+			if (e.clientX > drawer.clientWidth) {
+				drawer.classList.add('out')
+				setTimeout(() => {
+					drawer.close()
+					drawer.classList.remove('out')
+					unlock(drawer)
+				}, 300)
+			}
+		})
 	})
-
-	overlay.addEventListener('click', closeDrawer)
 </script>
 
 <style lang="scss" is:global>
 	.Drawer {
+		animation: fadeInRight 0.33s;
 		background: var(--surface);
+		border: 0;
 		bottom: 0;
 		box-shadow: 0 8px 10px -5px rgb(0 0 0 / 20%),
 			0 16px 24px 2px rgb(0 0 0 / 14%), 0 6px 30px 5px rgb(0 0 0 / 12%);
 		color: var(--on-surface);
-		display: none;
 		flex-direction: column;
+		height: unset;
 		justify-content: center;
 		left: 0;
+		margin: 0;
+		max-height: unset;
 		overflow-y: auto;
+		padding: 8px;
 		position: fixed;
 		top: 0;
-		transform: translate3D(-100%, 0, 0);
-		transition: transform 0.33s;
-		width: 270px;
-		width: 300px;
-		will-change: transform;
-		z-index: 99999;
 
-		&[open='true'] {
-			transform: translate3D(0, 0, 0);
+		&[open] {
+			display: flex;
 		}
-	}
 
-	.Drawer_overlay {
-		background: black;
-		bottom: 0;
-		cursor: pointer;
-		display: none;
-		left: 0;
-		opacity: 0;
-		position: fixed;
-		right: 0;
-		top: 0;
-		transition: opacity 0.33s;
-		z-index: 99998;
+		&.out {
+			animation: fadeOutLeft 0.33s;
+		}
 
-		&[open='true'] {
-			opacity: 0.33;
+		@keyframes fadeInRight {
+			from {
+				opacity: 0;
+				transform: translate3d(-100%, 0, 0);
+			}
+
+			to {
+				opacity: 1;
+				transform: translate3d(0, 0, 0);
+			}
+		}
+
+		@keyframes fadeOutLeft {
+			from {
+				opacity: 1;
+			}
+
+			to {
+				opacity: 0;
+				transform: translate3d(-100%, 0, 0);
+			}
 		}
 	}
 </style>
