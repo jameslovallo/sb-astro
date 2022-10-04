@@ -99,16 +99,19 @@ const classList = [blok.component, blok.style].join(' ')
 		}
 
 		&_content {
-			border-bottom: 1px solid var(--surface-border);
 			border-top: 1px solid var(--surface-border);
 			overflow-y: auto;
 			padding: 0 20px 24px;
 		}
 
 		&_footer {
+			background: var(--surface);
+			border-top: 1px solid var(--surface-border);
+			bottom: 0;
 			display: flex;
 			justify-content: flex-end;
 			padding: 8px;
+			position: sticky;
 		}
 
 		@keyframes fadeInUp {
