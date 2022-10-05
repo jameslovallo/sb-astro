@@ -40,6 +40,9 @@ let [width, height] = dimensions.split('x')
 if (blok.aspect_ratio.match(/[0-9]+\/[0-9]+/)) {
 	;[hor, vert] = blok.aspect_ratio.split('/')
 	height = Math.round((width * vert) / hor)
+} else {
+	hor = width
+	vert = height
 }
 
 const src = (w, h) => {
@@ -95,6 +98,7 @@ placeholder = 'data:image/webp;base64,' + placeholder.toString('base64')
 		let { src, hor, vert } = img.dataset
 		let { clientWidth, clientHeight } = img
 		clientHeight = Math.round((clientWidth * vert) / hor)
+		console.log
 		img.src = src
 			.replace('*width*', clientWidth)
 			.replace('*height*', clientHeight)
