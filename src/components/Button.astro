@@ -25,6 +25,7 @@ const inline = [
 	class={blok.component}
 	data-blok-c={blok.c}
 	data-blok-uid={blok.uid}
+	data-style={blok.style}
 	href={link(blok.link)}
 	style={inline}
 >
@@ -168,6 +169,10 @@ const inline = [
 					width: 24px;
 				}
 			}
+		}
+
+		&:not([data-style='text']) + & {
+			margin-left: 8px;
 		}
 	}
 </style>

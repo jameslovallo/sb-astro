@@ -1,5 +1,6 @@
 ---
 import responsive from './utils/responsive'
+import Slot from './Slot.astro'
 
 const { blok } = Astro.props
 const { html, css, javascript } = blok
@@ -22,4 +23,24 @@ ${javascript}
 	set:html={template}
 	style={responsive(blok)}
 >
+	<div class="Code_content" style="display: none !important">
+		<Slot bloks={blok.content} />
+	</div>
 </div>
+
+<script is:global>
+	document.querySelectorAll('.Code').forEach((el) => {
+		const content = el.querySelector('.Code_content')
+		const slot = el.querySelector('slot')
+		if (slot && content.children) {
+			const slotParent = slot.parentElement
+			slot.remove()
+			const children = [...content.children]
+			children.forEach((child) => {
+				const d = document.createElement('div')
+				slotParent.appendChild(d)
+				d.appendChild(child)
+			})
+		}
+	})
+</script>
