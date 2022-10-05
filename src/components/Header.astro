@@ -6,7 +6,7 @@ const { settings } = Astro.props
 
 <nav class="Header">
 	<Slot bloks={settings.drawer_button} />
-	<a href="/">{settings.app_bar_title}</a>
+	<a href="/" set:html={settings.app_bar_title}></a>
 	<div class="Header_desktop">
 		<Slot bloks={settings.app_bar_desktop} />
 	</div>
