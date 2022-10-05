@@ -45,16 +45,17 @@ const Components = {
 ---
 
 {
-	bloks.map(async (blok) => {
-		const editableAttributes = await getEditableAttributes(blok)
-		blok.c = editableAttributes['data-blok-c']
-		blok.uid = editableAttributes['data-blok-uid']
-		const El = Components[blok.component]
+	bloks &&
+		bloks.map(async (blok) => {
+			const editableAttributes = await getEditableAttributes(blok)
+			blok.c = editableAttributes['data-blok-c']
+			blok.uid = editableAttributes['data-blok-uid']
+			const El = Components[blok.component]
 
-		return El ? (
-			<El blok={blok} />
-		) : (
-			`Component "${El}" hasn't been created yet.`
-		)
-	})
+			return El ? (
+				<El blok={blok} />
+			) : (
+				`Component "${El}" hasn't been created yet.`
+			)
+		})
 }
