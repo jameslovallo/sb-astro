@@ -23,7 +23,7 @@ const containerInline = [
 const imageInline = [
 	blok.aspect_ratio ? `aspect-ratio: ${blok.aspect_ratio};` : '',
 	'height: auto;',
-	'width: 100%;',
+	`width: ${blok.fixed_width || '100%'};`,
 ].join(' ')
 
 // src
