@@ -12,7 +12,7 @@ export default (blok) => {
 		return `--xs: ${xsmall}; --sm: ${small}; --md: ${medium}; --lg: ${large}; --xl: ${xlarge};`
 	}
 	const v = blok.vertical_alignment
-		? ` align-self: ${blok.vertical_alignment}`
+		? ` align-self: ${blok.vertical_alignment};`
 		: ''
 	return r() + v
 }
