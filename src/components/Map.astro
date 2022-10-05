@@ -35,15 +35,10 @@ const imgSrc = () => {
 	class={blok.component}
 	data-blok-c={blok.c}
 	data-blok-uid={blok.uid}
+	data-src={blok.embed || mapSrc}
 	style={inline}
 >
-	<iframe
-		class="Map_embed"
-		frameborder="0"
-		src={blok.embed || mapSrc}
-		style="display: none"
-	>
-	</iframe>
+	<iframe class="Map_embed" frameborder="0" style="display: none"> </iframe>
 	<img class="Map_static" src={imgSrc()} alt={'Map of ' + blok.location} />
 	<button class="Map_overlay">Tap/Click to Load</button>
 </div>
@@ -55,6 +50,7 @@ const imgSrc = () => {
 		const overlay = map.querySelector('.Map_overlay')
 
 		overlay.addEventListener('click', () => {
+			embed.src = map.dataset.src
 			embed.style.display = 'block'
 			img.remove()
 			overlay.remove()
