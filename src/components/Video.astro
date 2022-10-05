@@ -59,7 +59,7 @@ const inline = [`aspect-ratio: ${blok.aspect_ratio};`, responsive(blok)].join(
 		const button = vid.querySelector('.Video_button')
 		const frame = vid.querySelector('.Video_frame')
 
-		overlay.addEventListener('click', () => {
+		button.addEventListener('click', () => {
 			frame.src = button.dataset.src
 			frame.style.display = 'block'
 			button.remove()
