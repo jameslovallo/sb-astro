@@ -114,7 +114,6 @@ const El = blok.type === 'textarea' ? 'textarea' : 'input'
 		--invalid: red;
 		--padding: 8px;
 		--border-width: 1px; // don't modify
-		--border-color: var(--surface-border);
 		--border-radius: 4px;
 		height: 48px;
 		max-height: 48px;
@@ -187,7 +186,7 @@ const El = blok.type === 'textarea' ? 'textarea' : 'input'
 
 			&:before,
 			&:after {
-				border: var(--border-width) solid var(--border-color);
+				border: var(--border-width) solid var(--form-outline);
 				content: '';
 				width: var(--padding);
 			}
@@ -207,8 +206,8 @@ const El = blok.type === 'textarea' ? 'textarea' : 'input'
 
 			label {
 				align-items: center;
-				border-bottom: var(--border-width) solid var(--border-color);
-				border-top: var(--border-width) solid var(--border-color);
+				border-bottom: var(--border-width) solid var(--form-outline);
+				border-top: var(--border-width) solid var(--form-outline);
 				display: flex;
 
 				span {
@@ -225,7 +224,7 @@ const El = blok.type === 'textarea' ? 'textarea' : 'input'
 		select:focus + &-outline,
 		select[data-active='true'] + &-outline,
 		select[data-active='true']:focus + &-outline {
-			--border-color: var(--field);
+			--form-outline: var(--field);
 
 			label {
 				border-top: var(--border-width) solid transparent;
@@ -285,20 +284,20 @@ const El = blok.type === 'textarea' ? 'textarea' : 'input'
 		}
 
 		select[data-active] + &-outline {
-			--border-color: currentColor;
+			--form-outline: currentColor;
 			--border-width: 1px;
 		}
 
 		input:not(:focus):not(:placeholder-shown):valid + .material-input-outline,
 		textarea:not(:focus):not(:placeholder-shown):valid
 			+ .material-input-outline {
-			--border-color: var(--valid);
+			--form-outline: var(--valid);
 			color: var(--valid);
 		}
 
 		input:not(:focus):not(:placeholder-shown):invalid
 			+ .material-input-outline {
-			--border-color: var(--invalid);
+			--form-outline: var(--invalid);
 			color: var(--invalid);
 		}
 
@@ -394,7 +393,7 @@ const El = blok.type === 'textarea' ? 'textarea' : 'input'
 
 				&:checked:after {
 					background: var(--field);
-					border-color: var(--field);
+					form-outline: var(--field);
 					opacity: 1;
 				}
 
