@@ -2,11 +2,24 @@
 import Slot from './Slot.astro'
 
 const { settings } = Astro.props
+const logo = settings?.logo?.filename
 ---
 
 <nav class="Header">
 	<Slot bloks={settings.drawer_button} />
-	<a href="/" set:html={settings.app_bar_title}></a>
+	{
+		logo ? (
+			<a href="/">
+				<img
+					src={logo}
+					alt={settings.app_bar_title}
+					height={settings.logo_height + 'px'}
+				/>
+			</a>
+		) : (
+			<a href="/" set:html={settings.app_bar_title} />
+		)
+	}
 	<div class="Header_desktop">
 		<Slot bloks={settings.app_bar_desktop} />
 	</div>
