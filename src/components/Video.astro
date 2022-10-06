@@ -46,6 +46,7 @@ const inline = [`aspect-ratio: ${blok.aspect_ratio};`, responsive(blok)].join(
 			<iframe
 				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 				allowfullscreen
+				class="Video_yt_frame"
 				frameborder="0"
 				style="display: none"
 				title="YouTube video player"
@@ -56,10 +57,10 @@ const inline = [`aspect-ratio: ${blok.aspect_ratio};`, responsive(blok)].join(
 
 <script>
 	document.querySelectorAll('.Video').forEach((vid) => {
-		const button = vid.querySelector('.Video_button')
-		const frame = vid.querySelector('.Video_frame')
+		const button = vid.querySelector('.Video_yt_button')
+		const frame = vid.querySelector('.Video_yt_frame')
 
-		overlay.addEventListener('click', () => {
+		button.addEventListener('click', () => {
 			frame.src = button.dataset.src
 			frame.style.display = 'block'
 			button.remove()
@@ -72,7 +73,7 @@ const inline = [`aspect-ratio: ${blok.aspect_ratio};`, responsive(blok)].join(
 		box-shadow: 0 0 0 1px var(--surface-border);
 		box-sizing: border-box;
 		&_yt_button,
-		&_yt_button_frame {
+		&_yt_frame {
 			height: 100%;
 			width: 100%;
 		}
