@@ -8,7 +8,7 @@ const El = blok.type === 'textarea' ? 'textarea' : 'input'
 	['text', 'tel', 'email', 'textarea'].includes(blok.type) && (
 		<div
 			class={'material-input material-input--' + blok.type}
-			style={responsive(blok)}
+			style={blok.responsive ? responsive(blok) : ''}
 		>
 			<El
 				id={'b-' + blok._uid}

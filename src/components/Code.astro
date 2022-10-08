@@ -21,7 +21,7 @@ ${javascript}
 	data-blok-c={blok.c}
 	data-blok-uid={blok.uid}
 	set:html={template}
-	style={responsive(blok)}
+	style={blok.responsive ? responsive(blok) : ''}
 >
 	<div class="Code_content" style="display: none !important">
 		<Slot bloks={blok.content} />

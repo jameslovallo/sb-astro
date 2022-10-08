@@ -6,7 +6,7 @@ const { blok } = Astro.props
 const classList = [blok.component, 'grid'].join(' ')
 
 const inline = [
-	responsive(blok),
+	blok.responsive ? responsive(blok) : '',
 	`--field: var(--${blok.color || 'primary'});`,
 	`--on-field: var(--on-${blok.color || 'primary'});`,
 ].join(' ')

@@ -10,7 +10,7 @@ const classList = [blok.component, blok.subgrid ? 'grid' : ''].join(' ')
 	class={classList}
 	data-blok-c={blok.c}
 	data-blok-uid={blok.uid}
-	style={responsive(blok)}
+	style={blok.responsive ? responsive(blok) : ''}
 >
 	<Slot bloks={blok.content} />
 </div>

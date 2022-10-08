@@ -8,7 +8,7 @@ const classList = [blok.component].join(' ')
 
 const containerInline = [
 	blok.aspect_ratio ? `aspect-ratio: ${blok.aspect_ratio};` : '',
-	blok.fixed_width ? `width: ${blok.fixed_width}` : '',
+	blok.fixed_width ? `width: ${blok.fixed_width};` : '',
 	`filter: ${[
 		`brightness(${blok.brightness})`,
 		`contrast(${blok.contrast})`,
@@ -97,8 +97,8 @@ placeholder = 'data:image/webp;base64,' + placeholder.toString('base64')
 	document.querySelectorAll('.Image .placeholder').forEach((img) => {
 		let { src, hor, vert } = img.dataset
 		let { clientWidth, clientHeight } = img
+		clientWidth = Math.round(clientWidth * devicePixelRatio)
 		clientHeight = Math.round((clientWidth * vert) / hor)
-		console.log
 		img.src = src
 			.replace('*width*', clientWidth)
 			.replace('*height*', clientHeight)

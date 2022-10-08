@@ -2,9 +2,10 @@
 import responsive from './utils/responsive'
 
 const { blok } = Astro.props
-const inline = [`--aspect-ratio: ${blok.aspect_ratio};`, responsive(blok)].join(
-	' '
-)
+const inline = [
+	`--aspect-ratio: ${blok.aspect_ratio};`,
+	blok.responsive ? responsive(blok) : '',
+].join(' ')
 
 const mapSrc = [
 	'https://maps.google.com/maps?q=',

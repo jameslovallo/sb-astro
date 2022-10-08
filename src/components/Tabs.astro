@@ -8,7 +8,7 @@ const PanelEl = 'div'
 
 const inline = [
 	`--indicator-color: var(--${blok.color || 'primary'});`,
-	responsive(blok)
+	blok.responsive ? responsive(blok) : ''
 ].join(' ')
 ---
 

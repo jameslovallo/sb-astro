@@ -5,7 +5,7 @@ import responsive from './utils/responsive'
 const { blok } = Astro.props
 
 const inline = [
-	responsive(blok),
+	blok.responsive ? responsive(blok) : '',
 	blok.alignment ? `text-align: ${blok.alignment};` : '',
 ].join(' ')
 

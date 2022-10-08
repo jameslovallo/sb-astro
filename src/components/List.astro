@@ -9,7 +9,7 @@ const classList = [blok.component, blok.style].join(' ')
 const inline = [
 	`--list: var(--${blok.color || 'primary'});`,
 	`--on-list: var(--on-${blok.color || 'primary'});`,
-	responsive(blok),
+	blok.responsive ? responsive(blok) : '',
 ].join(' ')
 ---
 
