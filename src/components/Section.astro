@@ -7,6 +7,7 @@ const classList = [blok.component, blok.style].join(' ')
 const inline = [
 	`--section: var(--${blok.color});`,
 	`--on-section: var(--on-${blok.color});`,
+	blok.custom_css,
 ].join(' ')
 ---
 
@@ -29,7 +30,7 @@ const inline = [
 		display: block;
 
 		&[class*='full-bleed'] {
-			--width: 100vw;
+			--width: calc(100% + var(--page-padding) * 2);
 			left: 50%;
 			margin-left: calc(-1 * var(--width) / 2);
 			position: relative;

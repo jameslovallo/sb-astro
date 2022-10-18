@@ -4,13 +4,17 @@ import responsive from './utils/responsive'
 
 const { blok } = Astro.props
 const classList = [blok.component, blok.subgrid ? 'grid' : ''].join(' ')
+
+const inline = [blok.responsive ? responsive(blok) : '', blok.custom_css].join(
+	' '
+)
 ---
 
 <div
 	class={classList}
 	data-blok-c={blok.c}
 	data-blok-uid={blok.uid}
-	style={blok.responsive ? responsive(blok) : ''}
+	style={inline}
 >
 	<Slot bloks={blok.content} />
 </div>
